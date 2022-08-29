@@ -4,7 +4,7 @@
   "private": true,
   "description": "A battleship game for The Odin Project course, javascript path.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack"
   },
   "repository": {
