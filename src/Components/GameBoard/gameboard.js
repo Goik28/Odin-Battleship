@@ -1,0 +1,74 @@
+import { Ship } from "../Ship/ship";
+
+export class GameBoard {
+  owner;
+  ships = [];
+  missedAttacks = [];
+  rightAttacks = [];
+
+  constructor(owner) {
+    this.owner = owner;
+  }
+
+  placeShip(coordinates) {
+    if (this.validateShipPlacement(coordinates)) {
+      const ship = new Ship(coordinates);
+      this.ships.push(ship);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  validateShipPlacement(coordinates) {
+    let valid = true;
+    coordinates.forEach((value) => {
+      this.ships.forEach((element) => {
+        if (element.getLength().includes(value)) {
+          return (valid = false);
+        }
+      });
+    });
+    return valid;
+  }
+
+  receiveAttack(coordinate) {
+    if (!this.validateAttack(coordinate)) {
+      return false;
+    }
+    let missed = true;
+    this.ships.forEach((element) => {
+      if (element.hit(coordinate)) {
+        this.rightAttacks.push(coordinate);
+        return (missed = false);
+      }
+    });
+    if (missed) {
+      this.missedAttacks.push(coordinate);
+    }
+  }
+
+  validateAttack(coordinate) {
+    if (
+      this.rightAttacks.includes(coordinate) ||
+      this.missedAttacks.includes(coordinate)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  getMissedAttacks() {
+    return this.missedAttacks;
+  }
+
+  getRightAttacks() {
+    return this.rightAttacks;
+  }
+
+  noShipLeft() {
+    return this.ships.every((value) => {
+      return value.isSunk();
+    });
+  }
+}

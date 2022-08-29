@@ -9,10 +9,15 @@ export class Ship {
 
   hit(coordinate) {
     if (this.length.includes(coordinate)) {
-      const pos = this.length.indexOf(coordinate);
-      return this.length.splice(pos, 1);
+      const pos = this.length.splice(this.length.indexOf(coordinate), 1);
+      this.setSunk();
+      return pos[0];
     }
     return false;
+  }
+
+  getLength() {
+    return this.length;
   }
 
   setSunk() {
