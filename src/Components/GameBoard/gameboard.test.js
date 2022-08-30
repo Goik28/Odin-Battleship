@@ -1,4 +1,4 @@
-import { GameBoard } from "./board.js";
+import { GameBoard } from "./gameboard.js";
 
 test("Add ship to GameBoard", () => {
   const board1 = new GameBoard("player1");

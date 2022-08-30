@@ -1,0 +1,16 @@
+footer {
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  padding-top: 5px;
+  border: solid black 0px;
+  border-top-width: 1px;
+  width: 700px;
+}
+
+a:link,
+a:visited {
+  color: black;
+}

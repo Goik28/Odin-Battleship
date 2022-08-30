@@ -1,14 +1,10 @@
-import { Ship } from "../Ship/ship";
+import { Ship } from "../Ship/ship.js";
 
 export class GameBoard {
-  owner;
   ships = [];
   missedAttacks = [];
   rightAttacks = [];
 
-  constructor(owner) {
-    this.owner = owner;
-  }
 
   placeShip(coordinates) {
     if (this.validateShipPlacement(coordinates)) {
