@@ -2,10 +2,10 @@ header {
   font-weight: 700;
   display: flex;
   justify-content: center;
-  margin-top: 15px;
-  margin-bottom: 5px;
-  padding-top: 5px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
   border: solid black 0px;
-  border-top-width: 1px;
+  border-bottom-width: 1px;
   width: 700px;
 }

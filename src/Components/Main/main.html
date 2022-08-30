@@ -1,24 +1,27 @@
-<div class="container">
-    <div class="player_Container">
-        <form class="playerOne_Container" action="">
-            <div class="player_Name">
-                <label for="playerOne_Name">Player 1:</label>
-                <input id="playerOne_Name" type="text" name="playerName" value="Savior" autocomplete="off">
-            </div>
-        </form>
-        <div class="versus">VS</div>
-        <form class="playerTwo_Container" action="">
-            <div class="player_Name">
-                <label for="playerTwo_Name">Player 2:</label>
-                <input id="playerTwo_Name" type="text" name="playerName" value="Terminator" autocomplete="off">
-            </div>
-        </form>
-        <button disabled id="newMatch">New match</button>
-    </div>
-    <main>
-
-    </main>
-    <div class="log">
-        <input type="text" name="" id="">
-    </div>
+<div class="player_Container">
+    <form class="playerOne_Container" action="">
+        <div class="player_Name">
+            <label for="playerOne_Name">Player 1:</label>
+            <input id="playerOne_Name" type="text" name="playerName" value="Savior" autocomplete="off">
+        </div>
+    </form>
+    <div class="versus">VS</div>
+    <form class="playerTwo_Container" action="">
+        <div class="player_Name">
+            <label for="playerTwo_Name">Player 2:</label>
+            <input id="playerTwo_Name" type="text" name="playerName" value="Terminator" autocomplete="off" disabled>
+        </div>
+    </form>
+</div>
+<div class="game_Controls">
+    <button id="placeShips">Place ships</button>
+    <button id="newMatch">New match</button>
+</div>
+<div class="game_Boards">
+    <div class="playerOne_Board"></div>
+    <div class="playerTwo_Board"></div>
+</div>
+<div class="log">
+    <button id="resetBoard">Reset Game</button>
+    <input disabled type="text" name="" id="">
 </div>
