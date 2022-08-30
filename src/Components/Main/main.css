@@ -27,6 +27,13 @@ main{
     margin: 30px 0px;    
 }
 
+.player1_Board,
+.player2_Board{
+    display: grid;
+    grid-template-rows: 50px 300px 30px ;
+    grid-template-columns: 30px 308px;
+}
+
 .log{
     display: flex;
     flex-direction: column;
