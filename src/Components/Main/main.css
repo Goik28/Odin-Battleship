@@ -1,50 +1,101 @@
-main{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.player_Container{
-    display: flex;
-    align-items: center;
+button{
+    padding: 10px;
+    font-size: 1.3rem;
+    border-radius: 15px;
 }
 
-.versus{
-    padding: 0px 30px;
+.player_Container {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 700;
 }
 
-.game_Controls{
-    display: flex;
-    margin: 30px 0px;    
+.game_Controls {
+  display: flex;
+  margin: 20px 0px;
 }
 
-.game_Controls>:first-child{
-    margin-right: 30px;
+.game_Controls > :first-child {
+  margin-right: 30px;
 }
 
-.game_Boards{
-    display: flex;
-    margin: 30px 0px;    
+.game_Boards {
+  display: flex;
+}
+
+.game_Boards>div{
+    margin-right: 50px;
 }
 
 .player1_Board,
-.player2_Board{
-    display: grid;
-    grid-template-rows: 50px 300px 30px ;
-    grid-template-columns: 30px 308px;
+.player2_Board {
+  display: grid;
+  grid-template-rows: 52px 520px 52px;
+  grid-template-columns: 52px 520px;
 }
 
-.log{
+.player_Title {
+  grid-row: 1 / 2;
+  grid-column: 1 / 3;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+.player_RowGuide{
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;  
+}
+
+.player1_Cells,
+.player2_Cells {
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  display: grid;
+  grid-template-columns: repeat(10, 52px);
+  grid-template-rows: repeat(10, 52px);
+  gap: 0px;
+}
+
+.player_ColGuide {
+    grid-row: 3 / 4;
+    grid-column: 1 / 3;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 30px 0px;
 }
 
-.log>:first-child{
-    margin-bottom: 30px;
+.player1_Cells>div,
+.player2_Cells>div,
+.player_RowGuide>div,
+.player_ColGuide>div {
+    box-sizing: border-box;
+    width: 52px;
+    height: 52px;
+    border: solid black 0px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
 }
-.log>input{
-    width: 500px;
-    height: 150px;
+
+.log {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.log > :first-child {
+  margin-bottom: 20px;
+}
+.log > input {
+  width: 600px;
+  height: 150px;
 }

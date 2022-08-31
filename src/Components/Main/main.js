@@ -18,9 +18,9 @@ function createBoard(string, id) {
   title.classList.add("player_Title");
   title.textContent = string;
   const rowGuide = createRowGuide();
-  rowGuide.classList.add("player_rowGuide");
+  rowGuide.classList.add("player_RowGuide");
   const colGuide = createColGuide();
-  colGuide.classList.add("player_colGuide");
+  colGuide.classList.add("player_ColGuide");
   const cells = createCells();
   cells.classList.add("player" + id + "_Cells");
   board.appendChild(title);
@@ -34,7 +34,7 @@ function createCells() {
   const cells = document.createElement("div");
   const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "f"];
   for (let col = 9; col >= 0; col--) {
-    for (let row = 1; row < 10; row++) {
+    for (let row = 1; row <= 10; row++) {
       const cell = document.createElement("div");
       cell.id = "" + column[col] + "" + row;
       cells.appendChild(cell);
@@ -45,10 +45,9 @@ function createCells() {
 
 function createRowGuide() {
   const rowGuide = document.createElement("div");
-  rowGuide.classList.add("rowGuide");
-  for (let index = 10; index < 1; index--) {
+  for (let index = 10; index >= 1; index--) {
     const cellGuide = document.createElement("div");
-    cellGuide.textContent(index);
+    cellGuide.textContent = index;
     rowGuide.appendChild(cellGuide);
   }
   return rowGuide;
@@ -56,7 +55,6 @@ function createRowGuide() {
 
 function createColGuide() {
   const colGuide = document.createElement("div");
-  colGuide.classList.add("colGuide");
   const neutral = document.createElement("div");
   neutral.classList.add("neutralGuide");
   colGuide.appendChild(neutral);
