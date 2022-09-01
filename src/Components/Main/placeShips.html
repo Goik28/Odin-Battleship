@@ -1,14 +1,14 @@
 <div class="ships_Title">Place your ships</div>
-<div class="ships_Control">
-    <button id="ships_Rotate">Rotate</button>
-    <button id="ships_Reset">Reset</button>
+<div class="ships_Description">Place you Carrier - 5 squares</div>
+<div class="ships_Controls">
+    <input type="radio" name="orientation" id="ships_Hor" checked>
+    <label for="ships_Hor">Horizontal</label>
+    <input type="radio" name="orientation" id="ships_Ver">
+    <label for="ships_Ver">Vertical</label>
 </div>
-<ol class="ships_List">Ships description
-    <li>Carrier - 5 squares</li>
-    <li>Battleship - 4 squares</li>
-    <li>Destroyer - 3 squares</li>
-    <li>Submarine - 3 squares</li>
-    <li>Patrol Boat - 2 squares</li>
-</ol>
 <div class="game_Boards"></div>
-<button id="ships_Confirm" disabled>Confirm</button>
+<div class="ships_Submit">
+    <button id="ships_Cancel">Cancel</button>
+    <button id="ships_Reset">Reset</button>
+    <button id="ships_Confirm" disabled>Confirm</button>
+</div>

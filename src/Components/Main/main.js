@@ -36,9 +36,9 @@ function createBoard(string, id) {
 
 function createCells() {
   const cells = document.createElement("div");
-  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "f"];
-  for (let col = 9; col >= 0; col--) {
-    for (let row = 1; row <= 10; row++) {
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  for (let row = 10; row > 0; row--) {
+    for (let col = 0; col < 10; col++) {
       const cell = document.createElement("div");
       cell.id = "" + column[col] + "" + row;
       cells.appendChild(cell);
@@ -62,7 +62,7 @@ function createColGuide() {
   const neutral = document.createElement("div");
   neutral.classList.add("neutralGuide");
   colGuide.appendChild(neutral);
-  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "f"];
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
   for (let index = 0; index < column.length; index++) {
     const element = column[index];
     const cellGuide = document.createElement("div");

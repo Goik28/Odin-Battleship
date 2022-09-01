@@ -28,19 +28,46 @@
 
 .ships_Controls {
   display: flex;
-  margin: 20px 0px;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
 }
 
-.ships_Controls > :first-child {
+.ships_Controls > input {
+    margin-right: 5px;
+    width: 30px;
+  }
+
+.ships_Controls > :nth-child(2) {
   margin-right: 30px;
 }
 
-.ships_List{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.ships_Description {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  animation: twinkle 1s alternate infinite;
+}
+@keyframes twinkle {
+  from {
+    color: black;
+    background-color: white;
+  }
+  to {
+    color: white;
+    background-color: black;
+  }
 }
 
-#ships_Confirm{
-    margin-top: 20px;
+.ships_Submit {
+  display: flex;
+  margin: 20px 0px;
+}
+
+.ships_Submit > :first-child {
+  margin-right: 30px;
+}
+
+.marked{
+    background-color: aquamarine;
 }
