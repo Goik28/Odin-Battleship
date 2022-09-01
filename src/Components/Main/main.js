@@ -1,5 +1,6 @@
 import html from "./main.html";
 import "./main.css";
+import { callPlaceShips } from "./placeShips";
 
 export function createMain() {
   const main = document.createElement("main");
@@ -8,6 +9,9 @@ export function createMain() {
   const p2Board = createBoard("Enemy Sea", 2);
   main.getElementsByClassName("game_Boards")[0].appendChild(p1Board);
   main.getElementsByClassName("game_Boards")[0].appendChild(p2Board);
+  main.querySelector("#place_Ships").addEventListener("click", () => {
+    document.body.appendChild(callPlaceShips(p1Board));
+  });
   return main;
 }
 
