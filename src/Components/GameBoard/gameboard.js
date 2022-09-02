@@ -5,7 +5,6 @@ export class GameBoard {
   missedAttacks = [];
   rightAttacks = [];
 
-
   placeShip(coordinates) {
     if (this.validateShipPlacement(coordinates)) {
       const ship = new Ship(coordinates);
@@ -66,5 +65,9 @@ export class GameBoard {
     return this.ships.every((value) => {
       return value.isSunk();
     });
+  }
+
+  getShipAmount() {
+    return this.ships.length;
   }
 }

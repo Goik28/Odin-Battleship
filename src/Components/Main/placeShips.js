@@ -1,6 +1,8 @@
 import html from "./placeShips.html";
 import "./placeShips.css";
 
+let playerPlacing;
+
 export function callPlaceShips(board, player) {
   const placeShipModal = document.createElement("div");
   placeShipModal.className = "placeShip_Modal";
@@ -17,23 +19,14 @@ export function callPlaceShips(board, player) {
     .addEventListener("click", (e) => {
       document.body.removeChild(placeShipModal);
     });
-  shipPlacement(placeShipBoard, 5, false);
+  playerPlacing = player;
+  startPlacement(placeShipBoard);
   return placeShipModal;
 }
 
-function startPlacement(container, player) {
-  let ship = shipTypes(player.gameBoard.ships.length + 1);
-  changeShipDescription(container, ship);
-  let orientation = false;
-  if (container.querySelector("#ships_Hor").checked) {
-    orientation = true;
-  }
-  shipPlacement(container, player, ship[1], orientation);
-}
-
-function changeShipDescription(container, ship) {
-  const description = container.getElementsByClassName("ships_Description");
-  description.textContent = `Place ${ship[0]} - ${ship[1]} squares`;
+function startPlacement(container) {
+  changeShipText(container);
+  addCellEvents(container);
 }
 
 function shipTypes(type) {
@@ -53,79 +46,122 @@ function shipTypes(type) {
   }
 }
 
-function shipPlacement(container, player, size, orientation) {
+function addCellEvents(container) {
   let cells = container.getElementsByClassName("player1_Board")[0];
   const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
-  if (orientation) {
-    for (let col = 0; col < 11 - size; col++) {
-      for (let row = 1; row <= 10; row++) {
-        const cell = cells.querySelector("#" + column[col] + "" + row);
-        cell.addEventListener("mouseenter", () => {
-          cell.classList.add("marked");
-          for (let index = 1; index < size; index++) {
-            cells
-              .querySelector("#" + column[col + index] + "" + row)
-              .classList.add("marked");
-          }
-        });
-        cell.addEventListener("mouseleave", () => {
-          cell.classList.remove("marked");
-          for (let index = 1; index < size; index++) {
-            cells
-              .querySelector("#" + column[col + index] + "" + row)
-              .classList.remove("marked");
-          }
-        });
-        cell.addEventListener("click", () => {
-          const placedShip = cells.getElementsByClassName("marked");
-          const placedShipCoord = [];
-          placedShip.forEach((element) => {
-            element.classList.add("placed");
-            element.classList.remove("marked");
-            placedShipCoord.push(element.id);
-          });
-          player.gameBoard.placeShip(placedShipCoord);
-        });
-      }
+  for (let col = 0; col < 10; col++) {
+    for (let row = 1; row <= 10; row++) {
+      const cell = cells.querySelector("#" + column[col] + "" + row);
+      cell.addEventListener("mouseenter", mouseEnterHandler);
+      cell.addEventListener("mouseleave", mouseLeaveHandler);
+      cell.addEventListener("click", mouseClickHandler);
     }
-  } else {
-    for (let col = 0; col < 10; col++) {
-      for (let row = 10; row >= size; row--) {
-        const cell = cells.querySelector("#" + column[col] + "" + row);
-        cell.addEventListener("mouseenter", () => {
-          cell.classList.add("marked");
-          for (let index = 1; index < size; index++) {
-            cells
-              .querySelector("#" + column[col] + "" + (row - index))
-              .classList.add("marked");
-          }
-        });
-        cell.addEventListener("mouseleave", () => {
-          cell.classList.remove("marked");
-          for (let index = 1; index < size; index++) {
-            cells
-              .querySelector("#" + column[col] + "" + (row - index))
-              .classList.remove("marked");
-          }
-        });
-
-        cell.addEventListener("click", () => {
-          const placedShip = cells.getElementsByClassName("marked");
-          const placedShipCoord = [];
-          placedShip.forEach((element) => {
-            element.classList.add("placed");
-            element.classList.remove("marked");
-            placedShipCoord.push(element.id);
-          });
-          player.gameBoard.placeShip(placedShipCoord);
-        });
-      }
-    }
-  }
-  cells = cells.cloneNode(true);
-  if (player.gameBoard.ships.length < 6) {
-    startPlacement(container, player);
   }
 }
 
-function shipMeasurement() {}
+function removeCellEvents(container) {
+  let cells = container.getElementsByClassName("player1_Board")[0];
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  for (let col = 0; col < 10; col++) {
+    for (let row = 1; row <= 10; row++) {
+      const cell = cells.querySelector("#" + column[col] + "" + row);
+      cell.removeEventListener("mouseenter", mouseEnterHandler);
+      cell.removeEventListener("mouseleave", mouseLeaveHandler);
+      cell.removeEventListener("click", mouseClickHandler);
+    }
+  }
+}
+
+function mouseEnterHandler(e) {
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  const cell = e.target;
+  const cells = cell.parentElement;
+  const col = column.indexOf(cell.id[0]);
+  const row = cell.id.substring(1);
+  let ship = shipTypes(playerPlacing.gameBoard.getShipAmount() + 1);
+  let rotate = document.getElementById("ships_Hor").checked;
+  if (
+    !cell.classList.contains("placed") &&
+    !cell.classList.contains("forbidden")
+  ) {
+    if (rotate) {
+      if (col + ship.size < 11) {
+        cell.classList.add("marked");
+        for (let index = 1; index < ship.size; index++) {
+          cells
+            .querySelector("#" + column[col + index] + "" + row)
+            .classList.add("marked");
+        }
+      }
+    } else {
+      if (row - ship.size >= 0) {
+        cell.classList.add("marked");
+        for (let index = 1; index < ship.size; index++) {
+          cells
+            .querySelector("#" + column[col] + "" + (row - index))
+            .classList.add("marked");
+        }
+      }
+    }
+  }
+}
+
+function mouseLeaveHandler(e) {
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  const cell = e.target;
+  const cells = cell.parentElement;
+  const col = column.indexOf(cell.id[0]);
+  const row = cell.id.substring(1);
+  let ship = shipTypes(playerPlacing.gameBoard.getShipAmount() + 1);
+  let rotate = document.getElementById("ships_Hor").checked;
+  if (
+    !cell.classList.contains("placed") &&
+    !cell.classList.contains("forbidden")
+  ) {
+    if (rotate) {
+      if (col + ship.size < 11) {
+        cell.classList.remove("marked");
+        for (let index = 1; index < ship.size; index++) {
+          cells
+            .querySelector("#" + column[col + index] + "" + row)
+            .classList.remove("marked");
+        }
+      }
+    } else {
+      if (row - ship.size >= 0) {
+        cell.classList.remove("marked");
+        for (let index = 1; index < ship.size; index++) {
+          cells
+            .querySelector("#" + column[col] + "" + (row - index))
+            .classList.remove("marked");
+        }
+      }
+    }
+  }
+}
+
+function mouseClickHandler(e) {
+  const cells = e.target.parentElement;
+  const placedShip = Array.from(cells.getElementsByClassName("marked"));
+  const placedShipCoord = [];
+  placedShip.forEach((element) => {
+    placedShipCoord.push(element.id);
+  });
+  if (playerPlacing.gameBoard.placeShip(placedShipCoord)) {
+    playerPlacing.gameBoard.placeShip(placedShipCoord);
+    placedShip.forEach((element) => {
+      element.classList.add("placed");
+      element.classList.remove("marked");
+    });
+    changeShipText(document.getElementsByClassName("placeShip_Board")[0]);
+  }
+  if (playerPlacing.gameBoard.getShipAmount() == 5) {
+    removeCellEvents(document.getElementsByClassName("placeShip_Board")[0]);
+  }
+}
+
+function changeShipText(container) {
+  let ship = shipTypes(playerPlacing.gameBoard.getShipAmount() + 1);
+  const description = container.getElementsByClassName("ships_Description")[0];
+  description.textContent = `Place ${ship.name} - ${ship.size} squares`;
+}

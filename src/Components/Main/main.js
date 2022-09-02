@@ -77,6 +77,5 @@ function createColGuide() {
 
 function createPlayer(){
     const savior = new Player("Savior");
-    savior.gameBoard = new GameBoard();
     return savior;
 }

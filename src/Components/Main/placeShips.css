@@ -71,3 +71,11 @@
 .marked{
     background-color: aquamarine;
 }
+
+.placed{
+    background-color: rgb(92, 92, 92);
+}
+
+.forbidden{
+    background-color: rgb(152, 92, 92);
+}
