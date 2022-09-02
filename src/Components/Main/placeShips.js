@@ -1,7 +1,7 @@
 import html from "./placeShips.html";
 import "./placeShips.css";
 
-export function callPlaceShips(board) {
+export function callPlaceShips(board, player) {
   const placeShipModal = document.createElement("div");
   placeShipModal.className = "placeShip_Modal";
   const placeShipBoard = document.createElement("div");
@@ -21,6 +21,21 @@ export function callPlaceShips(board) {
   return placeShipModal;
 }
 
+function startPlacement(container, player) {
+  let ship = shipTypes(player.gameBoard.ships.length + 1);
+  changeShipDescription(container, ship);
+  let orientation = false;
+  if (container.querySelector("#ships_Hor").checked) {
+    orientation = true;
+  }
+  shipPlacement(container, player, ship[1], orientation);
+}
+
+function changeShipDescription(container, ship) {
+  const description = container.getElementsByClassName("ships_Description");
+  description.textContent = `Place ${ship[0]} - ${ship[1]} squares`;
+}
+
 function shipTypes(type) {
   switch (type) {
     case 1:
@@ -38,12 +53,10 @@ function shipTypes(type) {
   }
 }
 
-//function shipPlacement(board) {}
-
-function shipPlacement(board, size, horizontal) {
-  const cells = board.getElementsByClassName("player1_Board")[0];
+function shipPlacement(container, player, size, orientation) {
+  let cells = container.getElementsByClassName("player1_Board")[0];
   const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
-  if (horizontal) {
+  if (orientation) {
     for (let col = 0; col < 11 - size; col++) {
       for (let row = 1; row <= 10; row++) {
         const cell = cells.querySelector("#" + column[col] + "" + row);
@@ -62,6 +75,16 @@ function shipPlacement(board, size, horizontal) {
               .querySelector("#" + column[col + index] + "" + row)
               .classList.remove("marked");
           }
+        });
+        cell.addEventListener("click", () => {
+          const placedShip = cells.getElementsByClassName("marked");
+          const placedShipCoord = [];
+          placedShip.forEach((element) => {
+            element.classList.add("placed");
+            element.classList.remove("marked");
+            placedShipCoord.push(element.id);
+          });
+          player.gameBoard.placeShip(placedShipCoord);
         });
       }
     }
@@ -85,8 +108,23 @@ function shipPlacement(board, size, horizontal) {
               .classList.remove("marked");
           }
         });
+
+        cell.addEventListener("click", () => {
+          const placedShip = cells.getElementsByClassName("marked");
+          const placedShipCoord = [];
+          placedShip.forEach((element) => {
+            element.classList.add("placed");
+            element.classList.remove("marked");
+            placedShipCoord.push(element.id);
+          });
+          player.gameBoard.placeShip(placedShipCoord);
+        });
       }
     }
+  }
+  cells = cells.cloneNode(true);
+  if (player.gameBoard.ships.length < 6) {
+    startPlacement(container, player);
   }
 }
 

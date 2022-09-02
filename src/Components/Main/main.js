@@ -1,6 +1,8 @@
 import html from "./main.html";
 import "./main.css";
 import { callPlaceShips } from "./placeShips";
+import { Player } from "../Player/player";
+import { GameBoard } from "../GameBoard/gameboard";
 
 export function createMain() {
   const main = document.createElement("main");
@@ -9,8 +11,9 @@ export function createMain() {
   const p2Board = createBoard("Enemy Sea", 2);
   main.getElementsByClassName("game_Boards")[0].appendChild(p1Board);
   main.getElementsByClassName("game_Boards")[0].appendChild(p2Board);
+  const savior = createPlayer();
   main.querySelector("#place_Ships").addEventListener("click", () => {
-    document.body.appendChild(callPlaceShips(p1Board));
+    document.body.appendChild(callPlaceShips(p1Board, savior));
   });
   return main;
 }
@@ -70,4 +73,10 @@ function createColGuide() {
     colGuide.appendChild(cellGuide);
   }
   return colGuide;
+}
+
+function createPlayer(){
+    const savior = new Player("Savior");
+    savior.gameBoard = new GameBoard();
+    return savior;
 }
