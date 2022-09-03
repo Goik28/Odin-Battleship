@@ -22,7 +22,7 @@ export class GameBoard {
     }
     coordinates.forEach((value) => {
       this.ships.forEach((element) => {
-        if (element.getLength().includes(value)) {
+        if (element.getCoordinates().includes(value)) {
           return (valid = false);
         }
       });

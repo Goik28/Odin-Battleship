@@ -2,7 +2,7 @@ import { Ship } from "./ship.js";
 
 test("Return ship coordinates", () => {
   const ship = new Ship(["a1", "a2", "a3"]);
-  expect(ship.length).toEqual(["a1", "a2", "a3"]);
+  expect(ship.coordinates).toEqual(["a1", "a2", "a3"]);
 });
 
 test("Test ship hit", () => {

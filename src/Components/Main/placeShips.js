@@ -18,6 +18,8 @@ export function callPlaceShips(board, player) {
   cancelButton.addEventListener("click", cancelButtonHandler);
   const resetButton = placeShipBoard.querySelector("#ships_Reset");
   resetButton.addEventListener("click", resetButtonHandler);
+  const confirmButton = placeShipBoard.querySelector("#ships_Confirm");
+  confirmButton.addEventListener("click", confirmButtonHandler);
   playerPlacing = player;
   startPlacement(placeShipBoard);
   return placeShipModal;
@@ -251,13 +253,15 @@ function forbidSquares(container) {
 
 function cancelButtonHandler() {
   playerPlacing.gameBoard.ships = [];
-  document.body.removeChild(document.getElementsByClassName("placeShip_Modal")[0]);
+  document.body.removeChild(
+    document.getElementsByClassName("placeShip_Modal")[0]
+  );
 }
 
 function resetButtonHandler() {
   playerPlacing.gameBoard.ships = [];
   document.getElementById("ships_Reset").disabled = true;
-    document.getElementById("ships_Confirm").disabled = true;
+  document.getElementById("ships_Confirm").disabled = true;
   resetCells();
   startPlacement(document.getElementsByClassName("placeShip_Board")[0]);
 }
@@ -274,5 +278,27 @@ function resetCells() {
   });
   allForbidden.forEach((cell) => {
     cell.classList.remove("forbidden");
+  });
+}
+
+function confirmButtonHandler() {
+  document.body.removeChild(
+    document.getElementsByClassName("placeShip_Modal")[0]
+  );
+  document.getElementById("place_Ships").disabled = true;
+  document.getElementById("new_Match").disabled = false;
+  document.getElementById("reset_Game").disabled = false;
+  placeShips();
+}
+
+function placeShips() {
+  const allShips = playerPlacing.gameBoard.ships;
+  const allPositions = [];
+  allShips.forEach((ship) => {
+    allPositions.push(...ship.getCoordinates());
+  });
+  const playerPlacingBoard = document.getElementsByClassName("player1_Cells")[0];
+  allPositions.forEach((position) => {
+    playerPlacingBoard.querySelector("#"+position).classList.add("placed");
   });
 }

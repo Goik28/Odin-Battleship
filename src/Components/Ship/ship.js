@@ -1,27 +1,27 @@
 export class Ship {
-  length = [];
+  coordinates = [];
   sunk;
 
   constructor(coordinates) {
-    this.length = coordinates;
+    this.coordinates = coordinates;
     this.sunk = false;
   }
 
   hit(coordinate) {
-    if (this.length.includes(coordinate)) {
-      const pos = this.length.splice(this.length.indexOf(coordinate), 1);
+    if (this.coordinates.includes(coordinate)) {
+      const pos = this.coordinates.splice(this.coordinates.indexOf(coordinate), 1);
       this.setSunk();
       return pos[0];
     }
     return false;
   }
 
-  getLength() {
-    return this.length;
+  getCoordinates() {
+    return this.coordinates;
   }
 
   setSunk() {
-    if (this.length == 0) {
+    if (this.coordinates == 0) {
       return (this.sunk = true);
     }
     return false;
