@@ -14,12 +14,10 @@ export function callPlaceShips(board, player) {
     .getElementsByClassName("game_Boards")[0]
     .replaceWith(boardMirror);
   placeShipModal.appendChild(placeShipBoard);
-  placeShipBoard
-    .querySelector("#ships_Cancel")
-    .addEventListener("click", (e) => {
-      playerPlacing.gameBoard.ships = [];
-      document.body.removeChild(placeShipModal);
-    });
+  const cancelButton = placeShipBoard.querySelector("#ships_Cancel");
+  cancelButton.addEventListener("click", cancelButtonHandler);
+  const resetButton = placeShipBoard.querySelector("#ships_Reset");
+  resetButton.addEventListener("click", resetButtonHandler);
   playerPlacing = player;
   startPlacement(placeShipBoard);
   return placeShipModal;
@@ -248,5 +246,33 @@ function forbidSquares(container) {
         adjCell.classList.add("forbidden");
       }
     }
+  });
+}
+
+function cancelButtonHandler() {
+  playerPlacing.gameBoard.ships = [];
+  document.body.removeChild(document.getElementsByClassName("placeShip_Modal")[0]);
+}
+
+function resetButtonHandler() {
+  playerPlacing.gameBoard.ships = [];
+  document.getElementById("ships_Reset").disabled = true;
+    document.getElementById("ships_Confirm").disabled = true;
+  resetCells();
+  startPlacement(document.getElementsByClassName("placeShip_Board")[0]);
+}
+
+function resetCells() {
+  const allMarked = Array.from(document.getElementsByClassName("marked"));
+  const allPlaced = Array.from(document.getElementsByClassName("placed"));
+  const allForbidden = Array.from(document.getElementsByClassName("forbidden"));
+  allMarked.forEach((cell) => {
+    cell.classList.remove("marked");
+  });
+  allPlaced.forEach((cell) => {
+    cell.classList.remove("placed");
+  });
+  allForbidden.forEach((cell) => {
+    cell.classList.remove("forbidden");
   });
 }
