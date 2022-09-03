@@ -64,8 +64,8 @@
   margin: 20px 0px;
 }
 
-.ships_Submit > :first-child {
-  margin-right: 30px;
+.ships_Submit > :nth-child(2) {
+  margin: 0 30px;
 }
 
 .marked{
@@ -77,5 +77,5 @@
 }
 
 .forbidden{
-    background-color: rgb(152, 92, 92);
+    background-color: #fca5a5;
 }

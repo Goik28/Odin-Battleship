@@ -17,6 +17,7 @@ export function callPlaceShips(board, player) {
   placeShipBoard
     .querySelector("#ships_Cancel")
     .addEventListener("click", (e) => {
+      playerPlacing.gameBoard.ships = [];
       document.body.removeChild(placeShipModal);
     });
   playerPlacing = player;
@@ -77,7 +78,7 @@ function mouseEnterHandler(e) {
   const cell = e.target;
   const cells = cell.parentElement;
   const col = column.indexOf(cell.id[0]);
-  const row = cell.id.substring(1);
+  const row = parseInt(cell.id.substring(1));
   let ship = shipTypes(playerPlacing.gameBoard.getShipAmount() + 1);
   let rotate = document.getElementById("ships_Hor").checked;
   if (
@@ -111,7 +112,7 @@ function mouseLeaveHandler(e) {
   const cell = e.target;
   const cells = cell.parentElement;
   const col = column.indexOf(cell.id[0]);
-  const row = cell.id.substring(1);
+  const row = parseInt(cell.id.substring(1));
   let ship = shipTypes(playerPlacing.gameBoard.getShipAmount() + 1);
   let rotate = document.getElementById("ships_Hor").checked;
   if (
@@ -143,6 +144,18 @@ function mouseLeaveHandler(e) {
 function mouseClickHandler(e) {
   const cells = e.target.parentElement;
   const placedShip = Array.from(cells.getElementsByClassName("marked"));
+  if (
+    !placedShip.every((value) => {
+      if (
+        !value.classList.contains("placed") &&
+        !value.classList.contains("forbidden")
+      ) {
+        return true;
+      }
+    })
+  ) {
+    return;
+  }
   const placedShipCoord = [];
   placedShip.forEach((element) => {
     placedShipCoord.push(element.id);
@@ -153,15 +166,87 @@ function mouseClickHandler(e) {
       element.classList.add("placed");
       element.classList.remove("marked");
     });
+    forbidSquares(document.getElementsByClassName("placeShip_Board")[0]);
     changeShipText(document.getElementsByClassName("placeShip_Board")[0]);
   }
   if (playerPlacing.gameBoard.getShipAmount() == 5) {
     removeCellEvents(document.getElementsByClassName("placeShip_Board")[0]);
+    document.getElementById("ships_Reset").disabled = false;
+    document.getElementById("ships_Confirm").disabled = false;
   }
 }
 
 function changeShipText(container) {
   let ship = shipTypes(playerPlacing.gameBoard.getShipAmount() + 1);
   const description = container.getElementsByClassName("ships_Description")[0];
-  description.textContent = `Place ${ship.name} - ${ship.size} squares`;
+  if (ship) {
+    description.textContent = `Place ${ship.name} - ${ship.size} squares`;
+  } else {
+    description.textContent = "Placement is over";
+  }
+}
+
+function forbidSquares(container) {
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  const placedShip = Array.from(container.getElementsByClassName("placed"));
+  placedShip.forEach((cell) => {
+    const col = column.indexOf(cell.id[0]);
+    const row = parseInt(cell.id.substring(1));
+    if (row < 10) {
+      const adjCell = container.querySelector("#" + column[col] + (row + 1));
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+    if (row < 10 && col < 9) {
+      const adjCell = container.querySelector(
+        "#" + column[col + 1] + (row + 1)
+      );
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+    if (col < 9) {
+      const adjCell = container.querySelector("#" + column[col + 1] + row);
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+    if (col < 9 && row > 1) {
+      const adjCell = container.querySelector(
+        "#" + column[col + 1] + (row - 1)
+      );
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+    if (row > 1) {
+      const adjCell = container.querySelector("#" + column[col] + (row - 1));
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+    if (row > 1 && col > 0) {
+      const adjCell = container.querySelector(
+        "#" + column[col - 1] + (row - 1)
+      );
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+    if (col > 0) {
+      const adjCell = container.querySelector("#" + column[col - 1] + row);
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+    if (col > 0 && row < 10) {
+      const adjCell = container.querySelector(
+        "#" + column[col - 1] + (row + 1)
+      );
+      if (!adjCell.classList.contains("placed")) {
+        adjCell.classList.add("forbidden");
+      }
+    }
+  });
 }

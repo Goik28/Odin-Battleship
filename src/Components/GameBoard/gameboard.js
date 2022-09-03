@@ -17,6 +17,9 @@ export class GameBoard {
 
   validateShipPlacement(coordinates) {
     let valid = true;
+    if (coordinates.length == 0) {
+      return (valid = false);
+    }
     coordinates.forEach((value) => {
       this.ships.forEach((element) => {
         if (element.getLength().includes(value)) {

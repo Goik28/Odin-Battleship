@@ -5,6 +5,11 @@ test("Add ship to GameBoard", () => {
   expect(board1.placeShip(["c1", "c2", "c3"])).toBe(true);
 });
 
+test("Add ship to GameBoard with empty coordinates", () => {
+  const board1 = new GameBoard("player1");
+  expect(board1.placeShip([])).toBe(false);
+});
+
 test("Get ship amount", () => {
   const board1 = new GameBoard("player1");
   board1.placeShip(["c1", "c2", "c3"]);
