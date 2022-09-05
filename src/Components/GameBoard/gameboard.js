@@ -80,6 +80,7 @@ export class GameBoard {
     if (missed) {
       this.missedAttacks.push(coordinate);
     }
+    return true;
   }
 
   validateAttack(coordinate) {

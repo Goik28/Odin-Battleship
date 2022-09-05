@@ -161,7 +161,6 @@ function mouseClickHandler(e) {
     placedShipCoord.push(element.id);
   });
   if (playerPlacing.gameBoard.placeShip(placedShipCoord)) {
-    playerPlacing.gameBoard.placeShip(placedShipCoord);
     placedShip.forEach((element) => {
       element.classList.add("placed");
       element.classList.remove("marked");

@@ -14,10 +14,9 @@ export function createMain() {
   const p2Board = createBoard("Enemy Sea", 2);
   main.getElementsByClassName("game_Boards")[0].appendChild(p1Board);
   main.getElementsByClassName("game_Boards")[0].appendChild(p2Board);
-  const savior = createPlayer();
   const placeShipsButton = main.querySelector("#place_Ships");
   placeShipsButton.addEventListener("click", placeShipsButtonHandler);
-  const newGameButton = main.querySelector("#new_Game");
+  const newGameButton = main.querySelector("#new_Match");
   newGameButton.addEventListener("click", newGameButtonHandler);
   const resetGameButton = main.querySelector("#reset_Game");
   resetGameButton.addEventListener("click", resetGameButtonHandler);
@@ -82,7 +81,8 @@ function createColGuide() {
 }
 
 function placeShipsButtonHandler() {
-  document.body.appendChild(callPlaceShips(p1Board, player1));
+    const board = document.getElementsByClassName("player1_Board")[0];
+  document.body.appendChild(callPlaceShips(board, player1));
 }
 
 function newGameButtonHandler(){
