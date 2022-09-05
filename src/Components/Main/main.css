@@ -95,7 +95,21 @@ button{
 .log > :first-child {
   margin-bottom: 20px;
 }
-.log > input {
+
+.log > textarea {
   width: 600px;
   height: 150px;
+  resize: none;
+}
+
+.missed{
+background-color: aqua;
+}
+
+.right.placed{
+    background-color: darkred;
+}
+
+.right{
+    background-color: darkred;
 }

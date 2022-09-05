@@ -1,10 +1,9 @@
-export function gameInit(player1, player2) {
+export function gameInit(player1, player2) {  
   randomShipPlacement(player2);
   if (Math.floor(Math.random() * 2)) {
-    player2.turn = true;
-    randomAttack(player1);
+    player2.turn = true;    
   } else {
-    player1.turn = true;
+    player1.turn = true;    
   }
 }
 
@@ -39,10 +38,12 @@ export function randomShipPlacement(player) {
 export function randomAttack(player) {
   const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
   let valid = false;
+  let coordinate;
   while (!valid) {
     const col = Math.floor(Math.random() * 9);
     const row = Math.floor(Math.random() * 10) + 1;
-    const coordinate = [column[col] + row];
+    coordinate = column[col] + row;
     valid = player.gameBoard.receiveAttack(coordinate);
   }
+  return coordinate;
 }
