@@ -21,13 +21,49 @@ export class GameBoard {
       return (valid = false);
     }
     coordinates.forEach((value) => {
-      this.ships.forEach((element) => {
-        if (element.getCoordinates().includes(value)) {
-          return (valid = false);
+      if (this.checkForbiddenCoordinates(value)) {
+        return (valid = false);
+      }
+    });
+    return valid;
+  }
+
+  checkForbiddenCoordinates(coordinate) {
+    const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+    const forbidden = new Set();
+    this.ships.forEach((ship) => {
+      const coordinates = ship.getCoordinates();
+      coordinates.forEach((coordinate) => {
+        forbidden.add(coordinate);
+        const col = column.indexOf(coordinate[0]);
+        const row = parseInt(coordinate.substring(1));
+        if (row < 10) {
+          forbidden.add(column[col] + (row + 1));
+        }
+        if (row < 10 && col < 9) {
+          forbidden.add(column[col + 1] + (row + 1));
+        }
+        if (col < 9) {
+          forbidden.add(column[col + 1] + row);
+        }
+        if (col < 9 && row > 1) {
+          forbidden.add(column[col + 1] + (row - 1));
+        }
+        if (row > 1) {
+          forbidden.add(column[col] + (row - 1));
+        }
+        if (row > 1 && col > 0) {
+          forbidden.add(column[col - 1] + (row - 1));
+        }
+        if (col > 0) {
+          forbidden.add(column[col - 1] + row);
+        }
+        if (col > 0 && row < 10) {
+          forbidden.add(column[col - 1] + (row + 1));
         }
       });
     });
-    return valid;
+    return forbidden.has(coordinate);
   }
 
   receiveAttack(coordinate) {

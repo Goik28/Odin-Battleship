@@ -10,6 +10,18 @@ test("Add ship to GameBoard with empty coordinates", () => {
   expect(board1.placeShip([])).toBe(false);
 });
 
+test("Add ship to GameBoard with near another ship", () => {
+  const board1 = new GameBoard("player1");
+  board1.placeShip(["c1", "c2", "c3"]);
+  expect(board1.placeShip(["b3", "b4", "b5"])).toBe(false);
+});
+
+test("Add ship to GameBoard with near another ship", () => {
+  const board1 = new GameBoard("player1");
+  board1.placeShip(["c4", "d4", "e4"]);
+  expect(board1.placeShip(["c5", "d5", "e5"])).toBe(false);
+});
+
 test("Get ship amount", () => {
   const board1 = new GameBoard("player1");
   board1.placeShip(["c1", "c2", "c3"]);

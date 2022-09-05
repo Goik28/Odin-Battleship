@@ -4,6 +4,9 @@ import { callPlaceShips } from "./placeShips";
 import { Player } from "../Player/player";
 import { GameBoard } from "../GameBoard/gameboard";
 
+const player1 = new Player("Savior");
+const player2 = new Player("Terminator");
+
 export function createMain() {
   const main = document.createElement("main");
   main.innerHTML = html;
@@ -12,9 +15,12 @@ export function createMain() {
   main.getElementsByClassName("game_Boards")[0].appendChild(p1Board);
   main.getElementsByClassName("game_Boards")[0].appendChild(p2Board);
   const savior = createPlayer();
-  main.querySelector("#place_Ships").addEventListener("click", () => {
-    document.body.appendChild(callPlaceShips(p1Board, savior));
-  });
+  const placeShipsButton = main.querySelector("#place_Ships");
+  placeShipsButton.addEventListener("click", placeShipsButtonHandler);
+  const newGameButton = main.querySelector("#new_Game");
+  newGameButton.addEventListener("click", newGameButtonHandler);
+  const resetGameButton = main.querySelector("#reset_Game");
+  resetGameButton.addEventListener("click", resetGameButtonHandler);
   return main;
 }
 
@@ -75,7 +81,24 @@ function createColGuide() {
   return colGuide;
 }
 
-function createPlayer(){
-    const savior = new Player("Savior");
-    return savior;
+function placeShipsButtonHandler() {
+  document.body.appendChild(callPlaceShips(p1Board, player1));
+}
+
+function newGameButtonHandler(){
+
+}
+
+function resetGameButtonHandler(){
+    const allPlaced = Array.from(document.getElementsByClassName("placed"));
+    allPlaced.forEach((cell) => {
+      cell.classList.remove("placed");
+    });
+    //reset all other markings on divs
+    player1.gameBoard = new GameBoard();
+    player2.gameBoard = new GameBoard();
+
+  document.getElementById("place_Ships").disabled = false;
+  document.getElementById("new_Match").disabled = true;
+  document.getElementById("reset_Game").disabled = true;
 }
