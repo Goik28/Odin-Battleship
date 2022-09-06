@@ -2,7 +2,7 @@ import html from "./main.html";
 import "./main.css";
 import { callPlaceShips } from "./placeShips";
 import { Player } from "../Player/player";
-import { GameBoard } from "../GameBoard/gameboard";
+import { GameBoard } from "../GameBoard/gameBoard";
 import { gameInit, randomAttack } from "./game";
 
 const player1 = new Player("Savior");
@@ -107,33 +107,10 @@ function newGameButtonHandler() {
     log.textContent =
       player1.name + " start the game. Click on a position to attack.";
   }
-  attachEventListeners();
+  addCellEvents();
 }
 
-function resetGameButtonHandler() {
-  const allPlaced = Array.from(document.getElementsByClassName("placed"));
-  allPlaced.forEach((cell) => {
-    cell.classList.remove("placed");
-  });
-  const allMissed = Array.from(document.getElementsByClassName("missed"));
-  allMissed.forEach((cell) => {
-    cell.classList.remove("missed");
-  });
-  const allRight = Array.from(document.getElementsByClassName("right"));
-  allRight.forEach((cell) => {
-    cell.classList.remove("right");
-  });
-  //reset all other markings on divs
-  player1.gameBoard = new GameBoard();
-  player2.gameBoard = new GameBoard();
-
-  document.getElementById("place_Ships").disabled = false;
-  document.getElementById("new_Match").disabled = true;
-  document.getElementById("reset_Game").disabled = true;
-  document.getElementById("combat_Log").textContent = "";
-}
-
-function attachEventListeners() {
+function addCellEvents() {
   let cells = document.getElementsByClassName("player2_Board")[0];
   const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
   for (let col = 0; col < 10; col++) {
@@ -144,32 +121,27 @@ function attachEventListeners() {
   }
 }
 
+function removeCellEvents() {
+  let cells = document.getElementsByClassName("player2_Board")[0];
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  for (let col = 0; col < 10; col++) {
+    for (let row = 1; row <= 10; row++) {
+      const cell = cells.querySelector("#" + column[col] + "" + row);
+      cell.removeEventListener("click", attackHandler);
+    }
+  }
+}
+
 function attackHandler(e) {
-  const log = document.getElementById("combat_Log");
   const attack = e.target.id;
   e.target.removeEventListener("click", attackHandler);
   if (player1.turn) {
     player1Attack(attack);
-    if (player2.gameBoard.noShipLeft()) {
-      log.textContent =
-        player2.name +
-        " has no ships left! " +
-        player1.name +
-        " won the game!!\n" +
-        log.textContent;
-      drawOnBoards();
+    if (winCondition(player1, player2)) {
       return;
     }
     player2Attack();
-    if (player1.gameBoard.noShipLeft()) {
-      log.textContent =
-        +"\n" +
-        player1.name +
-        " has no ships left! " +
-        player2.name +
-        " won the game!!\n" +
-        log.textContent;
-      drawOnBoards();
+    if (winCondition(player2, player1)) {
       return;
     }
     drawOnBoards();
@@ -188,6 +160,23 @@ function player2Attack() {
   const attack = randomAttack(player1);
   log.textContent =
     player2.name + " attacked the position " + attack + ".\n" + log.textContent;
+}
+
+function winCondition(winner, loser) {
+  const log = document.getElementById("combat_Log");
+  if (loser.gameBoard.noShipLeft()) {
+    log.textContent =
+      loser.name +
+      " has no ships left! " +
+      winner.name +
+      " won the game!!\n" +
+      log.textContent;
+    removeCellEvents();
+    drawOnBoards();
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function drawOnBoards() {
@@ -209,4 +198,38 @@ function drawOnBoards() {
     board2.querySelector("#" + coordinate).textContent = "X";
     board2.querySelector("#" + coordinate).classList.add("right");
   });
+}
+
+function resetGameButtonHandler() {
+  removeCellEvents();
+  const allPlaced = Array.from(document.getElementsByClassName("placed"));
+  allPlaced.forEach((cell) => {
+    cell.classList.remove("placed");
+  });
+  const allMissed = Array.from(document.getElementsByClassName("missed"));
+  allMissed.forEach((cell) => {
+    cell.classList.remove("missed");
+  });
+  const allRight = Array.from(document.getElementsByClassName("right"));
+  allRight.forEach((cell) => {
+    cell.classList.remove("right");
+  });
+  clearTexts(document.getElementsByClassName("player1_Board")[0]);
+  clearTexts(document.getElementsByClassName("player2_Board")[0]);
+  document.getElementById("combat_Log").textContent = "";
+  player1.gameBoard = new GameBoard();
+  player2.gameBoard = new GameBoard();
+  document.getElementById("place_Ships").disabled = false;
+  document.getElementById("new_Match").disabled = true;
+  document.getElementById("reset_Game").disabled = true;
+}
+
+function clearTexts(container) {
+  const column = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  for (let col = 0; col < 10; col++) {
+    for (let row = 1; row <= 10; row++) {
+      const cell = container.querySelector("#" + column[col] + "" + row);
+      cell.textContent = "";
+    }
+  }
 }

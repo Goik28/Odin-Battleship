@@ -1,4 +1,4 @@
-import { GameBoard } from "../GameBoard/gameboard";
+import { GameBoard } from "../GameBoard/gameBoard";
 
 export class Player{
     name;
